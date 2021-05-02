@@ -1,0 +1,6 @@
+node_modules/
+
+//configuration
+
+app/config/auth.js
+app/config/database.js
