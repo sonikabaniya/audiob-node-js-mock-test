@@ -1,16 +1,13 @@
 module.exports = (sequelize, Sequelize) => {
     const TestResponse = sequelize.define("testResponses", {
-        name: {
+        testID: {
             type: Sequelize.STRING
           },
           qna: {
             type: Sequelize.JSON
           },
           givenBy: {
-            type: Sequelize.STRING
-          },
-          reviewedBy:{
-            type: Sequelize.ARRAY(Sequelize.TEXT) 
+            type: Sequelize.INTEGER
           }
     });
   

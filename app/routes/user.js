@@ -29,4 +29,10 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.createTest
   );
+
+  app.post(
+    "/api/take/test/:testId",
+    [authJwt.verifyToken],
+    controller.takeTest
+  );
 };
