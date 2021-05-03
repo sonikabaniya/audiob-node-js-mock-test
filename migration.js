@@ -16,4 +16,9 @@ function initial() {
       id: 2,
       name: "admin"
     });
+
+    Role.create({
+      id: 2,
+      name: "superReviewer"
+    });
   }

@@ -1,5 +1,6 @@
 const db = require("../models");
 const TestResponse = db.testResponse
+const TestReview = db.testReview
 const Test = db.test;
 
 exports.allAccess = (req, res) => {
@@ -76,4 +77,47 @@ exports.allAccess = (req, res) => {
       res.json({"total percentage": correctAnswerCount/totalQuestion * 100})
     })
 
+  };
+
+  exports.reviewTest = (req, res) => {
+    TestReview.create({
+        testId: req.params.testId,
+        userId: req.params.userId,
+        status: req.body.status,
+        comment: [req.body.comment],
+        history: [req.name + " made review in" + Date.now()]
+      })
+      .then(
+          res.send({message: "Test reviewed successfully!"})
+      )
+      .catch(err => {
+        res.status(500).send({ message: err.message });
+      });
+  };
+
+  exports.superReviewTest = (req, res) => {
+    testHistory = []
+    commentHistory = []
+    test = TestReview.findByPk(req.params.testId)
+    .then(test => {
+      const testHistory = test.history
+      const commentHistory = test.comment
+    })
+
+    TestReview.update({
+        status: req.body.status,
+        comment: commentHistory.push(req.body.comment),
+        history: testHistory.push(req.name + " made review in" + Date.now())
+      },{
+        where: {
+          testId: req.params.testId,
+          userId: req.params.userId,
+        }
+      })
+      .then(
+          res.send({message: "Test reviewed successfully!"})
+      )
+      .catch(err => {
+        res.status(500).send({ message: err.message });
+      });
   };

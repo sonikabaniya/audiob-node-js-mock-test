@@ -41,8 +41,27 @@ isAdmin = (req, res, next) => {
   });
 };
 
+isSuperReviewer = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "superReviewer") {
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "Require superReviewer Role!"
+      });
+      return;
+    });
+  });
+};
+
 const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
+  isSuperReviewer: isSuperReviewer,
 };
 module.exports = authJwt;

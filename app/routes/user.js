@@ -41,4 +41,16 @@ module.exports = function(app) {
     [authJwt.verifyToken],
     controller.resultTest
   );
+
+  app.post(
+    "/api/review/:userId/test/:testId",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.reviewTest
+  );
+
+  app.post(
+    "/api/super-review/:userId/test/:testId",
+    [authJwt.verifyToken, authJwt.isSuperReviewer],
+    controller.reviewTest
+  );
 };
