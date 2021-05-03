@@ -40,3 +40,40 @@ exports.allAccess = (req, res) => {
         res.status(500).send({ message: err.message });
       });
   };
+
+  exports.resultTest = (req, res) => {
+    testID = req.params.testId
+    userID = req.userId
+
+    TestResponse.findOne({
+      where : {
+        testID : testID,
+        givenBy : userID
+
+      }
+    })
+    .then( test => {
+      if(!test) {
+        return res.status(404).send({ message: "Test Not found." });
+      }
+      
+      correctAnswerCount = 0
+      testInstance = test.dataValues
+      totalQuestion = Object.keys(testInstance.qna).length
+
+      for( i = 0; i < totalQuestion ; i++){
+          stri = String(i)
+          const correctAnswer = Test.findByPk(testID)
+          .then(
+            correctans => {
+              if(testInstance.qna.stri.answer == correctans.dataValues.qna.stri.answer.correct){
+                correctAnswerCount +=1
+              }
+            }
+          )
+
+      }
+      res.json({"total percentage": correctAnswerCount/totalQuestion * 100})
+    })
+
+  };
